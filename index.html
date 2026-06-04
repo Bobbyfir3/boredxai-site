@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BOREDXAI - Make AI video that sells. In seconds.</title>
+<meta name="description" content="BOREDXAI turns a prompt or a product photo into scroll-stopping, platform-ready AI video in seconds. Powered by Seedance 2.0 via XRT. Buy credits, generate, download. Own the upside with the $XAI token." />
+
+<!--
+  ============================================================
+  BOREDXAI - self-serve AI video platform (Calvin direction)
+  Placeholders to REPLACE before going live (search "REPLACE"):
+    - XRT_APP_URL   : the live Seedance/XRT generation app link
+    - WHATSAPP_URL  : https://wa.me/<full number, e.g. 60123456789>
+    - TELEGRAM_URL  : https://t.me/<group handle>
+    - TOKEN figures : $XAI tokenomics are placeholders, marked "TBA"
+    - AD SLOT       : launch advertiser creative (Calvin: BOREDSEXY) - kept neutral/SFW pending Bobby's sign-off
+  ============================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #07070c;
+    --bg-2: #0d0d16;
+    --surface: #12121d;
+    --surface-2: #181826;
+    --line: rgba(255,255,255,0.08);
+    --text: #ecedf5;
+    --muted: #969ab5;
+    --accent: #7c5cff;
+    --accent-2: #1fd6c6;
+    --accent-3: #ff5d8f;
+    --gold: #ffc24b;
+    --grad: linear-gradient(110deg, #7c5cff 0%, #5b8cff 45%, #1fd6c6 100%);
+    --grad-warm: linear-gradient(110deg, #ff5d8f 0%, #ff8a5b 100%);
+    --grad-token: linear-gradient(120deg, #ffc24b 0%, #ff8a5b 55%, #ff5d8f 100%);
+    --radius: 16px;
+    --maxw: 1180px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, .display { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.02em; line-height: 1.08; }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+  .accent-text { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .token-text { background: var(--grad-token); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-2); }
+  .muted { color: var(--muted); }
+
+  /* NAV */
+  header.nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px); background: rgba(7,7,12,0.72); border-bottom: 1px solid var(--line); }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-family: 'Space Grotesk'; font-weight: 700; font-size: 21px; letter-spacing: -0.01em; }
+  .logo .mark { width: 30px; height: 30px; }
+  .logo .x { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a { font-size: 14.5px; color: var(--muted); font-weight: 500; transition: color .2s; }
+  .nav-links a:hover { color: var(--text); }
+  .btn { display: inline-flex; align-items: center; gap: 8px; justify-content: center; font-weight: 600; font-size: 15px; border-radius: 999px; padding: 12px 22px; cursor: pointer; border: none; transition: transform .15s ease, box-shadow .2s ease, background .2s; font-family: 'Inter'; }
+  .btn-primary { background: var(--grad); color: #0a0a12; box-shadow: 0 8px 30px rgba(124,92,255,0.35); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(124,92,255,0.5); }
+  .btn-ghost { background: rgba(255,255,255,0.05); color: var(--text); border: 1px solid var(--line); }
+  .btn-ghost:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+  .btn-token { background: var(--grad-token); color: #1a1206; box-shadow: 0 8px 30px rgba(255,138,91,0.30); }
+  .btn-token:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(255,138,91,0.45); }
+  .nav-toggle { display: none; background: none; border: none; color: var(--text); font-size: 26px; cursor: pointer; }
+
+  /* HERO */
+  .hero { position: relative; padding: 92px 0 76px; overflow: hidden; }
+  .hero-glow { position: absolute; inset: -20% 0 auto 0; height: 720px; z-index: 0; pointer-events: none;
+    background: radial-gradient(600px 380px at 70% 10%, rgba(124,92,255,0.30), transparent 60%), radial-gradient(520px 360px at 20% 25%, rgba(31,214,198,0.18), transparent 60%), radial-gradient(420px 300px at 50% 0%, rgba(255,93,143,0.14), transparent 60%); filter: blur(8px); }
+  .hero .wrap { position: relative; z-index: 1; }
+  .hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 48px; align-items: center; }
+  .badge-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+  .chip { font-size: 12.5px; font-weight: 600; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,0.03); color: var(--muted); display: inline-flex; align-items: center; gap: 7px; }
+  .chip .d { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-2); box-shadow: 0 0 10px var(--accent-2); }
+  .chip.tok .d { background: var(--gold); box-shadow: 0 0 10px var(--gold); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 700; margin: 8px 0 22px; }
+  .hero p.lead { font-size: clamp(17px, 2vw, 20px); color: var(--muted); max-width: 560px; margin-bottom: 30px; }
+  .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+  .hero-note { margin-top: 22px; font-size: 13.5px; color: var(--muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-2); box-shadow: 0 0 12px var(--accent-2); }
+
+  .stack { position: relative; height: 430px; }
+  .vcard { position: absolute; border-radius: 18px; border: 1px solid var(--line); background: linear-gradient(160deg, var(--surface-2), var(--surface)); box-shadow: 0 24px 60px rgba(0,0,0,0.5); overflow: hidden; animation: float 7s ease-in-out infinite; }
+  .vcard .bar { height: 6px; background: var(--grad); }
+  .vcard .thumb { aspect-ratio: 9/16; background: linear-gradient(180deg, rgba(124,92,255,0.18), rgba(31,214,198,0.10)), repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0 10px, transparent 10px 20px); display: flex; align-items: flex-end; padding: 12px; }
+  .vcard .tag { font-size: 11px; font-weight: 600; color: #fff; background: rgba(0,0,0,0.45); padding: 4px 9px; border-radius: 999px; backdrop-filter: blur(4px); }
+  .vc1 { width: 172px; left: 4%; top: 34px; z-index: 3; }
+  .vc2 { width: 158px; right: 8%; top: 0; z-index: 2; animation-delay: -2.5s; }
+  .vc3 { width: 150px; right: 20%; bottom: 0; z-index: 1; animation-delay: -4.5s; }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
+
+  /* TRUST STRIP */
+  .trust { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg-2); padding: 20px 0; }
+  .trust .wrap { display: flex; align-items: center; gap: 12px 30px; flex-wrap: wrap; justify-content: center; }
+  .trust span { font-size: 13.5px; color: var(--muted); font-weight: 500; white-space: nowrap; }
+  .trust .sep { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.2); }
+
+  /* SECTION SHELL */
+  section.block { padding: 88px 0; }
+  .section-head { max-width: 700px; margin-bottom: 50px; }
+  .section-head.center { margin-left: auto; margin-right: auto; text-align: center; }
+  .section-head h2 { font-size: clamp(30px, 4vw, 44px); font-weight: 700; margin: 14px 0 16px; }
+  .section-head p { color: var(--muted); font-size: 17px; }
+
+  /* CARD GRID */
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; transition: transform .2s ease, border-color .2s ease, background .2s; }
+  .card:hover { transform: translateY(-4px); border-color: rgba(124,92,255,0.5); background: var(--surface-2); }
+  .ico { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: rgba(124,92,255,0.12); border: 1px solid rgba(124,92,255,0.25); margin-bottom: 18px; }
+  .ico svg { width: 22px; height: 22px; stroke: var(--accent-2); fill: none; stroke-width: 1.8; }
+  .card h3 { font-size: 18px; margin-bottom: 8px; font-weight: 600; }
+  .card p { color: var(--muted); font-size: 14.5px; }
+
+  /* STEPS */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .step { position: relative; padding-top: 20px; }
+  .step .n { font-family: 'Space Grotesk'; font-weight: 700; font-size: 15px; color: #0a0a12; width: 34px; height: 34px; border-radius: 50%; background: var(--grad); display: grid; place-items: center; margin-bottom: 16px; }
+  .step h3 { font-size: 16px; margin-bottom: 6px; }
+  .step p { font-size: 13.5px; color: var(--muted); }
+  .step::before { content: ''; position: absolute; top: 37px; left: 44px; right: -8px; height: 1px; background: linear-gradient(90deg, rgba(124,92,255,0.5), transparent); }
+  .step:last-child::before { display: none; }
+
+  /* PRICING */
+  .toggle-note { text-align:center; color:var(--muted); font-size:14px; margin-bottom: 34px; }
+  .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: stretch; }
+  .plan { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 32px 28px; display: flex; flex-direction: column; position: relative; }
+  .plan.feature { border-color: rgba(124,92,255,0.55); background: linear-gradient(170deg, rgba(124,92,255,0.10), var(--surface)); box-shadow: 0 20px 60px rgba(124,92,255,0.16); }
+  .plan .pop { position: absolute; top: -12px; left: 28px; font-size: 11.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; background: var(--grad); color: #0a0a12; padding: 5px 12px; border-radius: 999px; }
+  .plan h3 { font-size: 19px; margin-bottom: 6px; }
+  .plan .price { font-family: 'Space Grotesk'; font-weight: 700; font-size: 42px; margin: 10px 0 2px; }
+  .plan .price small { font-size: 15px; color: var(--muted); font-weight: 500; }
+  .plan .sub { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+  .plan ul { list-style: none; display: grid; gap: 11px; margin: 6px 0 26px; }
+  .plan li { display: flex; gap: 10px; font-size: 14.5px; align-items: flex-start; }
+  .plan li svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 3px; stroke: var(--accent-2); fill: none; stroke-width: 2.2; }
+  .plan .btn { width: 100%; margin-top: auto; }
+
+  .credit-table { margin-top: 30px; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: var(--surface); }
+  .credit-table .row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; padding: 13px 22px; font-size: 14.5px; border-bottom: 1px solid var(--line); align-items: center; }
+  .credit-table .row:last-child { border-bottom: none; }
+  .credit-table .row.head { background: var(--bg-2); color: var(--muted); font-weight: 600; font-size: 12.5px; text-transform: uppercase; letter-spacing: .05em; }
+  .credit-table .row span:last-child { text-align: right; }
+  .credit-table .row .r { text-align: right; }
+  .price-foot { color: var(--muted); font-size: 13px; margin-top: 14px; text-align:center; }
+
+  /* TOKEN */
+  .token { position: relative; overflow: hidden; border-radius: 28px; border: 1px solid rgba(255,194,75,0.25); padding: 56px 48px; background: linear-gradient(150deg, rgba(255,194,75,0.10), rgba(255,93,143,0.06)); }
+  .token-grid { display: grid; grid-template-columns: 1fr 0.9fr; gap: 48px; align-items: center; }
+  .token h2 { font-size: clamp(28px, 3.6vw, 42px); margin-bottom: 16px; }
+  .token p { color: var(--muted); margin-bottom: 14px; font-size: 16px; }
+  .util { list-style: none; display: grid; gap: 14px; margin-top: 22px; }
+  .util li { display: flex; gap: 13px; align-items: flex-start; font-size: 15px; }
+  .util .b { width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0; display: grid; place-items: center; background: rgba(255,194,75,0.14); border: 1px solid rgba(255,194,75,0.3); }
+  .util .b svg { width: 16px; height: 16px; stroke: var(--gold); fill: none; stroke-width: 2; }
+  .coin { aspect-ratio: 1; max-width: 320px; margin: 0 auto; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.18), transparent 45%), var(--grad-token); box-shadow: 0 30px 80px rgba(255,138,91,0.35), inset 0 0 60px rgba(0,0,0,0.15); position: relative; }
+  .coin span { font-family: 'Space Grotesk'; font-weight: 700; font-size: 64px; color: #1a1206; }
+  .coin small { position: absolute; bottom: 20%; font-size: 13px; letter-spacing: .3em; color: rgba(26,18,6,0.7); font-weight: 600; }
+  .tba { display: inline-block; margin-top: 18px; font-size: 12px; color: var(--gold); border: 1px dashed rgba(255,194,75,0.4); padding: 5px 12px; border-radius: 999px; }
+
+  /* AD BAND */
+  .ad-band { border: 1px dashed var(--line); border-radius: 20px; padding: 30px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 30px; align-items: center; background: var(--surface); }
+  .ad-slot { aspect-ratio: 16/6; border-radius: 14px; border: 1px solid var(--line); background: repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0 12px, transparent 12px 24px), var(--bg-2); display: grid; place-items: center; position: relative; }
+  .ad-slot .lbl { position: absolute; top: 10px; left: 12px; font-size: 11px; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; }
+  .ad-slot .mid { font-family: 'Space Grotesk'; font-weight: 600; color: var(--muted); font-size: 15px; }
+
+  /* STUDIO TEASER */
+  .studio { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; background: linear-gradient(150deg, rgba(31,214,198,0.07), rgba(124,92,255,0.05)); border: 1px solid var(--line); border-radius: 24px; padding: 48px; }
+  .studio h2 { font-size: clamp(26px,3.4vw,38px); margin-bottom: 14px; }
+  .studio p { color: var(--muted); font-size: 16px; margin-bottom: 12px; }
+  .soon { display:inline-block; font-size: 12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color: var(--accent-2); border:1px solid rgba(31,214,198,0.35); background: rgba(31,214,198,0.10); padding: 5px 12px; border-radius: 999px; margin-bottom: 16px; }
+  .studio-panel { border: 1px solid var(--line); border-radius: 18px; background: var(--bg); padding: 26px; min-height: 200px; display:grid; place-items:center; text-align:center; }
+  .studio-panel .ph { color: var(--muted); font-size: 14px; }
+
+  /* EVENTS */
+  .events { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+  .event { border: 1px solid var(--line); border-radius: 16px; padding: 26px; background: var(--surface); text-align:center; }
+  .event .when { font-size: 12.5px; color: var(--accent-2); font-weight: 600; letter-spacing:.04em; }
+  .event h3 { font-size: 19px; margin: 8px 0 4px; }
+  .event p { color: var(--muted); font-size: 13.5px; }
+
+  /* CONTACT */
+  .cta { position: relative; overflow: hidden; border-radius: 28px; padding: 60px 48px; background: linear-gradient(135deg, rgba(124,92,255,0.16), rgba(31,214,198,0.10)); border: 1px solid var(--line); }
+  .cta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+  .cta h2 { font-size: clamp(28px, 4vw, 42px); margin-bottom: 16px; }
+  .cta p { color: var(--muted); font-size: 16px; }
+  .chatrow { display: flex; gap: 14px; flex-wrap: wrap; margin: 24px 0 8px; }
+  .chatbtn { display: inline-flex; align-items: center; gap: 10px; padding: 13px 20px; border-radius: 14px; font-weight: 600; font-size: 15px; border: 1px solid var(--line); background: var(--bg); transition: transform .15s, border-color .2s; }
+  .chatbtn:hover { transform: translateY(-2px); }
+  .chatbtn.wa:hover { border-color: #25D366; }
+  .chatbtn.tg:hover { border-color: #29b6f6; }
+  .chatbtn svg { width: 22px; height: 22px; }
+  form { display: grid; gap: 14px; }
+  .frow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  input, select, textarea { width: 100%; background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 13px 15px; color: var(--text); font-family: 'Inter'; font-size: 15px; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
+  textarea { resize: vertical; min-height: 90px; }
+  label { font-size: 13px; color: var(--muted); margin-bottom: -6px; }
+  .form-msg { display: none; background: rgba(31,214,198,0.12); border: 1px solid rgba(31,214,198,0.4); color: var(--accent-2); padding: 14px; border-radius: 12px; font-size: 14.5px; }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--line); padding: 48px 0 36px; margin-top: 88px; }
+  .foot { display: flex; justify-content: space-between; align-items: flex-start; gap: 30px; flex-wrap: wrap; }
+  .foot p { color: var(--muted); font-size: 13.5px; max-width: 360px; margin-top: 12px; }
+  .foot-links { display: flex; gap: 26px; flex-wrap: wrap; }
+  .foot-links a { color: var(--muted); font-size: 14px; }
+  .foot-links a:hover { color: var(--text); }
+  .legal { margin-top: 30px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12.5px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  .disc { margin-top: 14px; font-size: 11.5px; color: rgba(150,154,181,0.7); max-width: 760px; }
+
+  /* reveal */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* RESPONSIVE */
+  @media (max-width: 920px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .stack { height: 320px; margin-top: 10px; }
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .steps { grid-template-columns: repeat(2, 1fr); }
+    .step::before { display: none; }
+    .price-grid { grid-template-columns: 1fr; max-width: 460px; margin: 0 auto; }
+    .token-grid, .studio, .cta-grid, .ad-band { grid-template-columns: 1fr; }
+    .grid-3, .events { grid-template-columns: 1fr; }
+    .token, .studio { padding: 36px; }
+    .nav-links { display: none; }
+    .nav-toggle { display: block; }
+    .nav-links.open { display: flex; position: absolute; top: 68px; left: 0; right: 0; flex-direction: column; background: var(--bg-2); padding: 20px 24px; border-bottom: 1px solid var(--line); gap: 18px; }
+  }
+  @media (max-width: 560px) {
+    .grid-4, .grid-2 { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; }
+    .frow { grid-template-columns: 1fr; }
+    .cta, .token, .studio { padding: 32px 22px; }
+    .credit-table .row { grid-template-columns: 1.6fr 1fr 1fr; font-size: 13px; padding: 11px 14px; }
+    .credit-table .row .hide-sm { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <div class="logo">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="1.5" y="1.5" width="29" height="29" rx="9" stroke="url(#g)" stroke-width="1.6"/>
+        <path d="M11 10l10 12M21 10L11 22" stroke="url(#g)" stroke-width="2.6" stroke-linecap="round"/>
+        <defs><linearGradient id="g" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#7c5cff"/><stop offset="0.5" stop-color="#5b8cff"/><stop offset="1" stop-color="#1fd6c6"/></linearGradient></defs>
+      </svg>
+      <span>BORED<span class="x">X</span>AI</span>
+    </div>
+    <nav class="nav-links" id="navlinks">
+      <a href="#make">What you make</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#token">$XAI Token</a>
+      <a href="#studio">Studio</a>
+      <a href="#contact" class="btn btn-primary" style="padding:9px 18px;">Start creating</a>
+    </nav>
+    <button class="nav-toggle" id="navtoggle" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="reveal in">
+        <div class="badge-row">
+          <span class="chip"><span class="d"></span> Powered by Seedance 2.0 &middot; via XRT</span>
+          <span class="chip tok"><span class="d"></span> $XAI token</span>
+        </div>
+        <h1>Make AI video that <span class="accent-text">sells</span>. In seconds.</h1>
+        <p class="lead">A prompt or a product photo goes in. A scroll-stopping, platform-ready video comes out. Buy credits, generate, download. Own the upside with the $XAI token.</p>
+        <div class="hero-cta">
+          <!-- REPLACE XRT_APP_URL -->
+          <a href="https://xrtoken.ai" target="_blank" rel="noopener" class="btn btn-primary">Start creating &#8594;</a>
+          <a href="#pricing" class="btn btn-ghost">See pricing</a>
+        </div>
+        <div class="hero-note"><span class="dot"></span> Debuting at MYBW &middot; Ultra Web3 Fest &middot; Tokenise Malaysia</div>
+      </div>
+      <div class="stack reveal in">
+        <div class="vcard vc1"><div class="bar"></div><div class="thumb"><span class="tag">TikTok Shop</span></div></div>
+        <div class="vcard vc2"><div class="bar"></div><div class="thumb"><span class="tag">Reels ad</span></div></div>
+        <div class="vcard vc3"><div class="bar"></div><div class="thumb"><span class="tag">Product short</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<div class="trust">
+  <div class="wrap">
+    <span>Powered by Seedance 2.0</span><span class="sep"></span>
+    <span>480p / 720p / 1080p</span><span class="sep"></span>
+    <span>9:16 &middot; 1:1 &middot; 16:9</span><span class="sep"></span>
+    <span>7 SEA languages</span><span class="sep"></span>
+    <span>Pay in card or $XAI</span>
+  </div>
+</div>
+
+<!-- WHAT YOU MAKE -->
+<section class="block" id="make">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">What you can make</span>
+      <h2>One engine. Every kind of short-form video.</h2>
+      <p>Generate the formats that actually move product and rack up views, in the language your audience scrolls in.</p>
+    </div>
+    <div class="grid-4">
+      <div class="card reveal">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M10 9l5 3-5 3z"/></svg></div>
+        <h3>Shoppable product video</h3>
+        <p>Turn a product photo into a TikTok Shop or Shopee-ready short that sells.</p>
+      </div>
+      <div class="card reveal">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1018 0 9 9 0 00-18 0z"/><path d="M12 8v8M8 12h8"/></svg></div>
+        <h3>Social ads &amp; UGC</h3>
+        <p>Hook-driven ad creative and UGC-style clips, batch-generated for testing.</p>
+      </div>
+      <div class="card reveal">
+        <div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M15 4v16"/></svg></div>
+        <h3>Faceless content</h3>
+        <p>Daily faceless shorts for creators and pages, no camera, no crew.</p>
+      </div>
+      <div class="card reveal">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/></svg></div>
+        <h3>Property &amp; listings</h3>
+        <p>Listing tours and developer reels, branded and ready to post.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="block" id="how" style="background:var(--bg-2);">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">How it works</span>
+      <h2>Prompt in. Video out. Four steps.</h2>
+      <p>Self-serve from the first click. No briefs, no waiting on an agency.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="n">1</div><h3>Prompt or upload</h3><p>Type an idea or drop in a product photo, logo or listing.</p></div>
+      <div class="step reveal"><div class="n">2</div><h3>Generate</h3><p>Seedance 2.0 via XRT renders multiple cuts in seconds.</p></div>
+      <div class="step reveal"><div class="n">3</div><h3>Pick your cut</h3><p>Choose resolution, length and format. Regenerate if you want.</p></div>
+      <div class="step reveal"><div class="n">4</div><h3>Download &amp; post</h3><p>Export platform-ready, captioned and sized to spec.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="block" id="pricing">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <span class="eyebrow">Pricing</span>
+      <h2>Simple credits. No lock-in.</h2>
+      <p>Pay as you go, or subscribe for a monthly credit balance. Pay with $XAI and get +20% bonus credits.</p>
+    </div>
+
+    <div class="price-grid">
+      <div class="plan reveal">
+        <h3>Starter</h3>
+        <div class="price">$19<small>/mo</small></div>
+        <div class="sub">200 credits a month</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg> ~16 HD (720p) videos a month</li>
+          <li><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg> 480p &amp; 720p, up to 10s</li>
+          <li><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg> All SEA languages &amp; formats</li>
+          <li><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg> Watermark-free exports</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost">Get Starter</a>
+      </div>
+
+      <div class="plan feature reveal">
+        <span class="pop">Most popular</span>
+        <h3>Creator</h3>
+        <div class="price">$49<small>/mo</small></div>
+        <div class="sub">550 credits a month</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg> ~45 HD (720p) videos a month</li>
+          <li><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg> 1080p &amp; up to 15s unlocked</li>
+          <li><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg> Priority generation queue</li>
+          <li><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg> Pay with $XAI for +20% credits</li>
+        </ul>
+        <a href="#contact" class="btn btn-primary">Get Creator</a>
+      </div>
+
+      <div class="plan reveal">
+        <h3>Studio</h3>
+        <div class="price">$149<small>/mo</small></div>
+        <div class="sub">1,700 credits a month</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg> ~140 HD (720p) videos a month</li>
+          <li><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg> API access &amp; bulk generation</li>
+          <li><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg> White-label / resale option</li>
+          <li><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg> Team seats &amp; brand profiles</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost">Talk to us</a>
+      </div>
+    </div>
+
+    <div class="credit-table reveal">
+      <div class="row head"><span>Pay as you go &middot; 1 credit = $0.10</span><span class="r">Fast</span><span class="r hide-sm">Standard</span><span class="r">Credits</span></div>
+      <div class="row"><span>480p &middot; 5s</span><span class="r">&#10003;</span><span class="r hide-sm">&#10003;</span><span class="r">6 cr</span></div>
+      <div class="row"><span>720p &middot; 5s (HD)</span><span class="r">&#10003;</span><span class="r hide-sm">&#10003;</span><span class="r">12 cr</span></div>
+      <div class="row"><span>720p &middot; 5s Standard quality</span><span class="r">&#8211;</span><span class="r hide-sm">&#10003;</span><span class="r">15 cr</span></div>
+      <div class="row"><span>1080p &middot; 5s (Full HD)</span><span class="r">&#8211;</span><span class="r hide-sm">&#10003;</span><span class="r">30 cr</span></div>
+    </div>
+    <p class="price-foot">10s = 2&#215; credits, 15s = 3&#215; credits. Credit packs from $10. Prices in USD.</p>
+  </div>
+</section>
+
+<!-- $XAI TOKEN -->
+<section class="block" id="token" style="background:var(--bg-2);">
+  <div class="wrap">
+    <div class="token reveal">
+      <div class="token-grid">
+        <div>
+          <span class="eyebrow" style="color:var(--gold);">The $XAI token</span>
+          <h2>Don't just spend credits. <span class="token-text">Own the platform.</span></h2>
+          <p>$XAI is the token that powers BOREDXAI. Use it to pay for generation at a discount, earn it as you create, and help steer where the platform goes next.</p>
+          <ul class="util">
+            <li><span class="b"><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg></span><div><strong>Pay &amp; save.</strong> Top up credits with $XAI and get +20% bonus value.</div></li>
+            <li><span class="b"><svg viewBox="0 0 24 24"><path d="M12 2v20M5 9l7-7 7 7"/></svg></span><div><strong>Earn as you create.</strong> Rewards for referrals, top creators and viral outputs.</div></li>
+            <li><span class="b"><svg viewBox="0 0 24 24"><path d="M3 12h18M12 3v18"/></svg></span><div><strong>Govern.</strong> Vote on templates, model integrations and the roadmap.</div></li>
+            <li><span class="b"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span><div><strong>Stake (planned).</strong> Stake $XAI for platform revenue share.</div></li>
+          </ul>
+          <div><span class="tba">Tokenomics, supply &amp; listing details: TBA</span></div>
+        </div>
+        <div class="reveal">
+          <div class="coin"><span>X</span><small>$XAI</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AD INVENTORY -->
+<section class="block" id="advertise">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Advertise on BOREDXAI</span>
+      <h2>Put your brand in front of creators.</h2>
+      <p>Premium banner inventory inside the app and on the dashboard, reaching SEA sellers and creators generating video every day.</p>
+    </div>
+    <div class="ad-band reveal">
+      <div class="ad-slot">
+        <span class="lbl">Ad slot &middot; 970&#215;250</span>
+        <span class="mid">Your campaign here</span>
+      </div>
+      <div>
+        <h3 style="font-family:'Space Grotesk';font-size:20px;margin-bottom:10px;">Launch advertiser slots open</h3>
+        <p class="muted" style="font-size:14.5px;margin-bottom:16px;">Sponsor the feed, the export screen or the template gallery. Fixed-rate or CPM, payable in card or $XAI.</p>
+        <a href="#contact" class="btn btn-ghost">Book ad inventory</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROGUE STUDIO -->
+<section class="block" id="studio" style="background:var(--bg-2);">
+  <div class="wrap">
+    <div class="studio reveal">
+      <div>
+        <span class="soon">Coming soon</span>
+        <h2>Rogue Studio</h2>
+        <p>The pro creation suite for teams who want full control: scripted scenes, brand kits, multi-shot edits and advanced direction on top of the BOREDXAI engine.</p>
+        <p class="muted">Reserved integration. Studio and white-label customers get first access.</p>
+        <div style="margin-top:22px;"><a href="#contact" class="btn btn-ghost">Join the Studio waitlist</a></div>
+      </div>
+      <div class="studio-panel">
+        <div class="ph">[ Rogue Studio preview reserved ]<br/><span style="font-size:12px;">module integrates here</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section class="block" id="events">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <span class="eyebrow">On the road</span>
+      <h2>Meet BOREDXAI at the launch.</h2>
+    </div>
+    <div class="events">
+      <div class="event reveal"><div class="when">2026</div><h3>MYBW</h3><p>Malaysia Blockchain Week. Live demos at the booth.</p></div>
+      <div class="event reveal"><div class="when">2026</div><h3>Ultra Web3 Fest</h3><p>Stage demo and creator giveaways in $XAI.</p></div>
+      <div class="event reveal"><div class="when">2026</div><h3>Tokenise Malaysia</h3><p>$XAI token story and partner sign-ups.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="block" id="contact">
+  <div class="wrap">
+    <div class="cta reveal">
+      <div class="cta-grid">
+        <div>
+          <span class="eyebrow">Get started</span>
+          <h2>Start creating, or talk to a human.</h2>
+          <p>Jump into the app to generate your first video, or message us on WhatsApp or Telegram. For ad inventory, white-label and partnerships, drop your details and we will come back fast.</p>
+          <div class="chatrow">
+            <!-- REPLACE WHATSAPP_URL -->
+            <a href="https://wa.me/60000000000" target="_blank" rel="noopener" class="chatbtn wa">
+              <svg viewBox="0 0 24 24" fill="#25D366"><path d="M12 2a10 10 0 00-8.5 15.3L2 22l4.8-1.5A10 10 0 1012 2zm5.8 14.1c-.2.7-1.4 1.3-2 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5-4.5-.2-.2-1.2-1.6-1.2-3 0-1.4.7-2.1 1-2.4.2-.3.5-.4.7-.4h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2.1.4 0 .5l-.4.6c-.2.2-.3.4-.1.7.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.5-.1l.7-.8c.2-.2.4-.2.6-.1l1.8.9c.2.1.4.2.5.3.1.3.1.7-.1 1.2z"/></svg>
+              WhatsApp
+            </a>
+            <!-- REPLACE TELEGRAM_URL -->
+            <a href="https://t.me/boredxai" target="_blank" rel="noopener" class="chatbtn tg">
+              <svg viewBox="0 0 24 24" fill="#29b6f6"><path d="M21.9 4.3l-3 14.1c-.2 1-.8 1.2-1.6.8l-4.4-3.2-2.1 2c-.2.2-.4.4-.8.4l.3-4.5 8.2-7.4c.4-.3-.1-.5-.6-.2L7.5 13 3.2 11.7c-.9-.3-.9-.9.2-1.4l16.9-6.5c.8-.3 1.5.2 1.6 1.5z"/></svg>
+              Telegram
+            </a>
+          </div>
+          <p class="muted" style="font-size:13px;">Replace the WhatsApp number and Telegram handle before launch.</p>
+        </div>
+        <div>
+          <form id="leadform">
+            <div class="frow">
+              <div><label>Name</label><input type="text" name="name" required placeholder="Your name" /></div>
+              <div><label>Business / handle</label><input type="text" name="company" placeholder="Optional" /></div>
+            </div>
+            <div class="frow">
+              <div><label>Market</label>
+                <select name="market">
+                  <option>Malaysia</option><option>Singapore</option><option>Indonesia</option>
+                  <option>Philippines</option><option>Vietnam</option><option>Thailand</option><option>Other</option>
+                </select>
+              </div>
+              <div><label>Email</label><input type="email" name="email" required placeholder="you@email.com" /></div>
+            </div>
+            <div><label>I'm interested in</label>
+              <select name="intent">
+                <option>Creating videos (self-serve)</option>
+                <option>White-label / API</option>
+                <option>Buying ad inventory</option>
+                <option>$XAI token / partnership</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;">Send</button>
+            <div class="form-msg" id="formmsg">Thanks. We will be in touch shortly.</div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <div class="logo">
+          <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="1.5" y="1.5" width="29" height="29" rx="9" stroke="url(#g2)" stroke-width="1.6"/>
+            <path d="M11 10l10 12M21 10L11 22" stroke="url(#g2)" stroke-width="2.6" stroke-linecap="round"/>
+            <defs><linearGradient id="g2" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#7c5cff"/><stop offset="0.5" stop-color="#5b8cff"/><stop offset="1" stop-color="#1fd6c6"/></linearGradient></defs>
+          </svg>
+          <span>BORED<span class="x">X</span>AI</span>
+        </div>
+        <p>Self-serve AI video, powered by Seedance 2.0 via XRT. Generate, download, and own the upside with $XAI.</p>
+      </div>
+      <div class="foot-links">
+        <a href="#make">What you make</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#token">$XAI Token</a>
+        <a href="#advertise">Advertise</a>
+        <a href="#studio">Studio</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+    <div class="legal">
+      <span>&copy; 2026 BOREDXAI. All rights reserved.</span>
+      <span>Malaysia &middot; Southeast Asia</span>
+    </div>
+    <p class="disc">$XAI token utilities described above are planned features and not financial advice or an offer of securities. Tokenomics and availability are subject to change and local regulation. Generation powered by Seedance 2.0 via XRT.</p>
+  </div>
+</footer>
+
+<script>
+  // year hard-coded to 2026 in markup to avoid runtime date dependency
+  var t = document.getElementById('navtoggle');
+  var l = document.getElementById('navlinks');
+  if (t) t.addEventListener('click', function(){ l.classList.toggle('open'); });
+  l.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ l.classList.remove('open'); }); });
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  var f = document.getElementById('leadform');
+  if (f) f.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    document.getElementById('formmsg').style.display = 'block';
+    f.querySelector('button').textContent = 'Sent';
+  });
+</script>
+</body>
+</html>
