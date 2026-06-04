@@ -177,6 +177,14 @@
   .ad-slot { aspect-ratio: 16/6; border-radius: 14px; border: 1px solid var(--line); background: repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0 12px, transparent 12px 24px), var(--bg-2); display: grid; place-items: center; position: relative; }
   .ad-slot .lbl { position: absolute; top: 10px; left: 12px; font-size: 11px; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; }
   .ad-slot .mid { font-family: 'Space Grotesk'; font-weight: 600; color: var(--muted); font-size: 15px; }
+  /* live BoredSexy ad creative (launch advertiser) */
+  .ad-slot.ad-live { background: linear-gradient(110deg,#ffffff 0%,#fff5f6 58%,#ffe6ea 100%); border: 1px solid rgba(227,0,27,0.30); text-decoration:none; display:flex; align-items:center; justify-content:space-between; gap:5%; padding:0 6%; overflow:hidden; }
+  .ad-slot.ad-live::after { content:''; position:absolute; right:-6%; top:-60%; width:55%; height:220%; background:radial-gradient(circle at 60% 50%, rgba(227,0,27,0.16), transparent 68%); pointer-events:none; }
+  .ad-slot.ad-live .lbl { color: rgba(20,8,10,0.45); }
+  .ad-slot .bsx-logo { height:46%; max-height:84px; width:auto; object-fit:contain; position:relative; z-index:1; }
+  .ad-slot .bsx-cta { font-family:'Space Grotesk'; font-weight:700; font-size:16px; color:#fff; background:#e3001b; padding:13px 24px; border-radius:999px; white-space:nowrap; position:relative; z-index:1; box-shadow:0 10px 26px rgba(227,0,27,0.32); transition:transform .15s ease; }
+  .ad-slot.ad-live:hover .bsx-cta { transform:translateY(-2px); }
+  .ad-slot .bsx-18 { position:absolute; bottom:9px; right:13px; font-size:10.5px; font-weight:700; color:#e3001b; border:1px solid rgba(227,0,27,0.45); border-radius:6px; padding:2px 7px; z-index:1; letter-spacing:.05em; }
 
   /* STUDIO TEASER */
   .studio { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; background: linear-gradient(150deg, rgba(31,214,198,0.07), rgba(124,92,255,0.05)); border: 1px solid var(--line); border-radius: 24px; padding: 48px; }
@@ -461,10 +469,13 @@
       <p>Premium banner inventory inside the app and on the dashboard, reaching SEA sellers and creators generating video every day.</p>
     </div>
     <div class="ad-band reveal">
-      <div class="ad-slot">
-        <span class="lbl">Ad slot &middot; 970&#215;250</span>
-        <span class="mid">Your campaign here</span>
-      </div>
+      <!-- REPLACE href with the real BoredSexy URL -->
+      <a class="ad-slot ad-live" href="#" target="_blank" rel="noopener" aria-label="BoredSexy - sponsored">
+        <span class="lbl">Sponsored</span>
+        <img src="assets/boredsexy-logo.png" alt="BoredSexy" class="bsx-logo" />
+        <span class="bsx-cta">Enter 18+ &#8594;</span>
+        <span class="bsx-18">18+</span>
+      </a>
       <div>
         <h3 style="font-family:'Space Grotesk';font-size:20px;margin-bottom:10px;">Launch advertiser slots open</h3>
         <p class="muted" style="font-size:14.5px;margin-bottom:16px;">Sponsor the feed, the export screen or the template gallery. Fixed-rate or CPM, payable in card or $XAI.</p>
